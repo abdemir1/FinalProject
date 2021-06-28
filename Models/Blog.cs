@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace CET322Final.Models
 {
-    public class Category
-
+    public class Blog
     {
-
     }
 }
