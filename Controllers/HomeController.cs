@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace CET322Final.Controllers
 {
     public class HomeController : Controller
-        // başladık
+        
 
     {
         private readonly ILogger<HomeController> _logger;
