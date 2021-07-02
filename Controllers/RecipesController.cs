@@ -48,7 +48,7 @@ namespace CET322Final.Controllers
         // GET: Recipes/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Title");
             return View();
         }
 

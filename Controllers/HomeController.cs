@@ -1,4 +1,5 @@
-﻿using CET322Final.Models;
+﻿using CET322Final.Data;
+using CET322Final.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,13 +15,15 @@ namespace CET322Final.Controllers
 
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext dbContext)
         {
             _logger = logger;
+            this.dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public async  Task<IActionResult> Index()
         {
             return View();
             
