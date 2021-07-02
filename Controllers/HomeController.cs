@@ -1,12 +1,14 @@
 ﻿using CET322Final.Data;
 using CET322Final.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace CET322Final.Controllers
 {
@@ -23,9 +25,12 @@ namespace CET322Final.Controllers
             this.dbContext = dbContext;
         }
 
-        public async  Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var query= dbContext.Recipes.Include(t => t.Category).Where(t => true).OrderBy(t => t.CreatedDate);
+
+            List<Recipe> result = await query.ToListAsync();
+            return View( result);
             
         }
 

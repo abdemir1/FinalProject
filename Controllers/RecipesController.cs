@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CET322Final.Data;
 using CET322Final.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CET322Final.Controllers
 {
@@ -20,10 +21,20 @@ namespace CET322Final.Controllers
         }
 
         // GET: Recipes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(SearchViewModel searchModel)
         {
-            var applicationDbContext = _context.Recipes.Include(r => r.Category);
-            return View(await applicationDbContext.ToListAsync());
+            var query = _context.Recipes.Include(r => r.Category).AsQueryable();
+
+
+            if (!String.IsNullOrWhiteSpace(searchModel.SearchText))
+            {
+                query = query.Where(t => t.Title.Contains(searchModel.SearchText)); // StringComparison.OrdinalIgnoreCase
+            }
+            query = query.OrderBy(t => t.CreatedDate);
+
+            searchModel.Result = await query.ToListAsync();
+
+            return View(searchModel);
         }
 
         // GET: Recipes/Details/5
