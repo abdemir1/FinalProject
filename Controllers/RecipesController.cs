@@ -8,22 +8,26 @@ using Microsoft.EntityFrameworkCore;
 using CET322Final.Data;
 using CET322Final.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CET322Final.Controllers
 {
     public class RecipesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<MyUser> _userManager;
 
-        public RecipesController(ApplicationDbContext context)
+        public RecipesController(ApplicationDbContext context, UserManager<MyUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-
+        [Authorize]
         // GET: Recipes
         public async Task<IActionResult> Index(SearchViewModel searchModel)
         {
-            var query = _context.Recipes.Include(r => r.Category).AsQueryable();
+            var myUser = await _userManager.GetUserAsync(HttpContext.User);
+            var query = _context.Recipes.Include(r => r.Category).Where(t => t.MyUserId == myUser.Id);
 
 
             if (!String.IsNullOrWhiteSpace(searchModel.SearchText))
@@ -57,6 +61,8 @@ namespace CET322Final.Controllers
         }
 
         // GET: Recipes/Create
+
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Title");
@@ -64,12 +70,16 @@ namespace CET322Final.Controllers
         }
 
         // POST: Recipes/Create
+        [Authorize]
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ImageURL,CategoryId")] Recipe recipe)
         {
+            var myUser = await _userManager.GetUserAsync(HttpContext.User);
+
+            recipe.MyUserId = myUser.Id;
             if (ModelState.IsValid)
             {
                 _context.Add(recipe);
@@ -81,6 +91,7 @@ namespace CET322Final.Controllers
         }
 
         // GET: Recipes/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -98,6 +109,7 @@ namespace CET322Final.Controllers
         }
 
         // POST: Recipes/Edit/5
+        [Authorize]
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -134,6 +146,7 @@ namespace CET322Final.Controllers
         }
 
         // GET: Recipes/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -153,6 +166,7 @@ namespace CET322Final.Controllers
         }
 
         // POST: Recipes/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

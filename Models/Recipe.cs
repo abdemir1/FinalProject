@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,11 +23,13 @@ namespace CET322Final.Models
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
+        [DisplayName("Level")]
         public string ImageURL { get; set; }
 
         [ScaffoldColumn(false)]
         public DateTime CreatedDate { get; set; }
 
+        [DisplayName("Category")]
         public int CategoryId { get; set; }
 
         public virtual Category Category { get; set; }

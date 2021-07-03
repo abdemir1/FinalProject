@@ -27,7 +27,7 @@ namespace CET322Final.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var query= dbContext.Recipes.Include(t => t.Category).Where(t => true).OrderBy(t => t.CreatedDate);
+            var query= dbContext.Recipes.Include(t => t.Category).Where(t => true).OrderByDescending(t => t.CreatedDate);
 
             List<Recipe> result = await query.ToListAsync();
             return View( result);
