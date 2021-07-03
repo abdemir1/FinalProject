@@ -31,5 +31,8 @@ namespace CET322Final.Models
 
         public virtual Category Category { get; set; }
 
+        public string MyUserId { get; set; }
+        public virtual MyUser MyUser { get; set; }
+
     }
 }
