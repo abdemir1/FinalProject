@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CET322Final.Data;
 using CET322Final.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CET322Final.Controllers
 {
@@ -42,7 +43,7 @@ namespace CET322Final.Controllers
 
             return View(category);
         }
-
+        [Authorize]
         // GET: Categories/Create
         public IActionResult Create()
         {
@@ -64,7 +65,7 @@ namespace CET322Final.Controllers
             }
             return View(category);
         }
-
+        [Authorize]
         // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -80,7 +81,7 @@ namespace CET322Final.Controllers
             }
             return View(category);
         }
-
+        [Authorize]
         // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -115,7 +116,7 @@ namespace CET322Final.Controllers
             }
             return View(category);
         }
-
+        [Authorize]
         // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -133,7 +134,7 @@ namespace CET322Final.Controllers
 
             return View(category);
         }
-
+        [Authorize]
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
